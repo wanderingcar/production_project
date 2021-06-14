@@ -59,7 +59,7 @@ def setup(env):
         customer_num += 1
         IAT = IAT()
         yield env.timeout(IAT)
-        env.process(person(env, "Customer {0}".format(customer_num)))
+        env.process(person(env, "Customer {0}".format(customer_num), exit_1))
 
 
 env = simpy.Environment()
