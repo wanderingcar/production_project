@@ -20,23 +20,16 @@ def stair_time(congested=0):  # 1인당 계단 소요시간
         return np.random.exponential(scale=30)  # 혼잡시 평균 30초 소요
 
 
-def person(env, customer_name, shop):
+def person(env, name, exit):
     a = env.now
-    print("{0} arrives at the exit at".format(customer_name), a)
-    global cus_sys, sys_c, sys_t
-    cus_sys += 1
-    sys_c.append(cus_sys)
-    sys_t.append(a)
+    print("{0} arrives at the exit at".format(name), a)
 
     # request shop capacity
-    with shop.servers.request() as req:
+    with exit.servers.request() as req:
         yield req
-        yield env.process(shop.wash(customer_name))
+        yield env.process(exit.escape(name))
         b = env.now
-        print("{0} leaves the shop at".format(customer_name), b)
-        cus_sys -= 1
-        sys_c.append(cus_sys)
-        sys_t.append(b)
+        print("{0} leaves the shop at".format(name), b)
 
 
 class Exit:  # 출구
@@ -45,8 +38,8 @@ class Exit:  # 출구
         self.servers = simpy.Resource(env, capacity=capacity)  # 한번에 지나갈 수 있는 사람 수
         self.repairing_time = stair_time()
 
-    def escape(self, customer_name):
-        print("{0} enters the stair at".format(customer_name), self.env.now)
+    def escape(self, name):
+        print("{0} enters the stair at".format(name), self.env.now)
         self.renew_parameter()
         yield self.env.timeout()
         print("Repairing done at", self.env.now)
