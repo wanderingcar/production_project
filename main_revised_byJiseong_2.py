@@ -7,6 +7,7 @@ num_people = 800
 num_exits = 4
 
 P_type = [0.703, 0.025, 0.164, 0.005, 0.04, 0.063]  # [일반, 장애인, 고령자, 임산부, 영유아 동반, 어린이], 2020년 교통안전정보관리시스템 기준
+# https://tmacs.ts2020.kr/web/TW/weak01.jsp?mid=S3098
 
 
 def IAT(time):  # 사람 간 간격
